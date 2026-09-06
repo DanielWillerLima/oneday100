@@ -451,6 +451,165 @@
             width: 0%;
             transition: width 0.4s ease;
         }
+
+        /* ----------------------------------------------------------- */
+        /* MEDIA QUERIES PARA RESPONSIVIDADE MOBILE (TELAS ATÉ 768px) */
+        /* ----------------------------------------------------------- */
+        @media (max-width: 768px) {
+            body {
+                padding: 15px 10px; /* Reduz padding do body */
+                align-items: flex-start; /* Alinha no topo para facilitar scroll */
+            }
+
+            .app-container {
+                max-width: 100%; /* Ocupa largura total */
+            }
+
+            /* Ajustes do Login */
+            .login-card {
+                padding: 25px 15px;
+                margin-top: 20px;
+            }
+
+            /* Ajustes do Header */
+            header {
+                flex-direction: column; /* Empilha logo e tagline */
+                align-items: flex-start;
+                gap: 5px;
+                margin-bottom: 15px;
+                padding-bottom: 10px;
+            }
+            .logo-wrapper span {
+                font-size: 20px; /* Diminui tamanho da logo */
+            }
+            .tagline {
+                font-size: 11px;
+            }
+
+            /* Abas */
+            .nav-tabs {
+                gap: 5px;
+                margin-bottom: 15px;
+                padding-bottom: 5px;
+            }
+            .tab-btn {
+                padding: 6px 10px;
+                font-size: 12px;
+            }
+
+            /* Cards Gerais */
+            .card-box {
+                padding: 15px;
+                margin-bottom: 15px;
+            }
+            .card-box h3 {
+                font-size: 14px;
+                margin-bottom: 10px;
+            }
+
+            /* Grid de Números (Visão Geral/Realizado) */
+            .numbers-grid {
+                grid-template-columns: repeat(2, 1fr); /* 2 colunas no celular */
+                gap: 10px;
+            }
+            .number-card {
+                padding: 12px 10px;
+            }
+            .number-card label {
+                font-size: 10px;
+            }
+            .number-card .val {
+                font-size: 16px; /* Fontes menores */
+            }
+            /* Faz o último card (Ganhos) ocupar as duas colunas */
+            .numbers-grid div:last-child {
+                grid-column: span 2;
+            }
+
+            /* Formulários de Lançamento */
+            .input-group-grid {
+                grid-template-columns: 1fr; /* Empilha todos os inputs */
+                gap: 8px;
+                padding: 12px;
+            }
+            input, select {
+                font-size: 14px;
+                padding: 12px; /* Aumenta área de toque */
+            }
+            button.action-btn {
+                width: 100%; /* Botão largura total */
+                padding: 12px;
+                margin-top: 5px;
+                white-space: normal; /* Permite quebra de texto se necessário */
+            }
+
+            /* Div que segura a tabela para permitir scroll horizontal */
+            div[style*="overflow-x: auto"] {
+                margin: 0 -15px; /* Remove padding do card para a tabela encostar na borda */
+                padding: 0 15px;
+            }
+
+            /* Tabelas */
+            .data-table {
+                font-size: 12px;
+            }
+            .data-table th, .data-table td {
+                padding: 10px 5px;
+                white-space: nowrap; /* Impede quebra de linha nas células */
+            }
+
+            /* Day One Banner */
+            .objective-flag-banner {
+                padding: 20px 15px;
+                margin-bottom: 20px;
+            }
+            .objective-flag-banner h2 {
+                font-size: 18px;
+            }
+            .objective-flag-banner p {
+                font-size: 12px;
+            }
+            .objective-flag-banner div[style*="margin-top: 15px"] {
+                font-size: 12px !important;
+            }
+
+            /* Day One Active Card */
+            .active-objective-card {
+                padding: 15px;
+                gap: 15px;
+            }
+            .objective-image-preview {
+                height: 150px;
+            }
+            .objective-details h2 {
+                font-size: 18px;
+            }
+            .objective-metrics {
+                gap: 8px;
+            }
+            .metric-box label {
+                font-size: 9px;
+            }
+            .metric-box span {
+                font-size: 12px;
+            }
+
+            /* Gráficos Semanais/Mensais */
+            .chart-row {
+                padding: 10px;
+            }
+            .chart-label-info {
+                font-size: 11px;
+            }
+
+            /* Footer */
+            .user-footer {
+                flex-direction: column;
+                gap: 10px;
+                text-align: center;
+                font-size: 11px;
+            }
+        }
     </style>
 </head>
 <body>
@@ -598,996 +757,5 @@
                         </div>
                         
                         <div class="file-upload-wrapper">
-                            <div class="file-upload-btn" id="uploadLabelText">📁 Foto</div>
-                            <input type="file" id="objFotoInput" accept="image/*" onchange="atualizarNomeArquivo(this)">
-                        </div>
-
-                        <button class="action-btn" onclick="salvarObjetivoDayOne()" style="padding: 10px 16px;">Salvar Objetivo</button>
-                    </div>
-                    
-                    <div style="margin-top: 15px; font-size: 13px; color: #a1a1aa; background: #09090b; padding: 10px; border-radius: 8px; border: 1px solid #27272a;">
-                        💡 <strong>Alvo Total Calculado (150%):</strong> <span id="previewAlvoTotal" style="color: #22c55e; font-weight: 700;">R$ 150.000,00</span> <span style="font-size: 11px; color: #71717a;">(R$ 50k CDB + R$ 100k Carro)</span>
-                    </div>
-                </div>
-
-                <div id="displayObjetivoContainer"></div>
-
-                <div class="card-box" id="cronogramaBox" style="display: none;">
-                    <h3>📅 Cronograma Dinâmico da Jornada</h3>
-                    <p style="margin-bottom: 15px;">Acompanhamento temporal atualizado automaticamente conforme os dias avançam.</p>
-                    <div style="overflow-x: auto;">
-                        <table class="data-table">
-                            <thead>
-                                <tr>
-                                    <th>Marco Temporal</th>
-                                    <th>Período Estimado</th>
-                                    <th>Status do Tempo</th>
-                                    <th>Alvo Acumulado Parcial</th>
-                                </tr>
-                            </thead>
-                            <tbody id="tabelaCronogramaCorpo"></tbody>
-                        </table>
-                    </div>
-                </div>
-            </div>
-
-            <!-- ABA 4: METAS SEMANAIS -->
-            <div id="tab-semanal" class="tab-content">
-                <div class="card-box">
-                    <h3>📊 Configuração das Metas Semanais</h3>
-                    <p style="margin-bottom: 15px;">Defina as metas totais que deseja cumprir ao longo da semana.</p>
-                    
-                    <div class="weekly-grid-inputs">
-                        <div>
-                            <label style="font-size: 11px; color: #71717a; text-transform: uppercase; font-weight: 600; display: block; margin-bottom: 5px;">Meta Estudo Semanal (h)</label>
-                            <input type="number" id="metaSemanalEstudo" placeholder="Ex: 20" step="0.5">
-                        </div>
-                        <div>
-                            <label style="font-size: 11px; color: #71717a; text-transform: uppercase; font-weight: 600; display: block; margin-bottom: 5px;">Meta Trabalho Semanal (h)</label>
-                            <input type="number" id="metaSemanalTrabalho" placeholder="Ex: 40" step="0.5">
-                        </div>
-                        <div>
-                            <label style="font-size: 11px; color: #71717a; text-transform: uppercase; font-weight: 600; display: block; margin-bottom: 5px;">Meta Treino Semanal (h)</label>
-                            <input type="number" id="metaSemanalTreino" placeholder="Ex: 5" step="0.5">
-                        </div>
-                        <div style="display: flex; align-items: flex-end;">
-                            <button class="action-btn" onclick="salvarMetasSemanais()" style="height: 41px; width: 100%;">Salvar Metas</button>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="card-box">
-                    <h3>📈 Gráfico de Progresso Semanal</h3>
-                    <p style="margin-bottom: 10px;">Acompanhamento consolidado das horas realizadas em relação às metas estipuladas.</p>
-                    
-                    <div class="chart-bars-container">
-                        <div class="chart-row">
-                            <div class="chart-label-info">
-                                <span id="chartEstudoTexto">Estudo: 0.0h / 0.0h</span>
-                                <span id="chartEstudoPorc">0%</span>
-                            </div>
-                            <div class="chart-bar-track">
-                                <div id="barEstudo" class="chart-bar-fill"></div>
-                            </div>
-                        </div>
-
-                        <div class="chart-row">
-                            <div class="chart-label-info">
-                                <span id="chartTrabalhoTexto">Trabalho: 0.0h / 0.0h</span>
-                                <span id="chartTrabalhoPorc">0%</span>
-                            </div>
-                            <div class="chart-bar-track">
-                                <div id="barTrabalho" class="chart-bar-fill" style="background: #3b82f6;"></div>
-                            </div>
-                        </div>
-
-                        <div class="chart-row">
-                            <div class="chart-label-info">
-                                <span id="chartTreinoTexto">Treino: 0.0h / 0.0h</span>
-                                <span id="chartTreinoPorc">0%</span>
-                            </div>
-                            <div class="chart-bar-track">
-                                <div id="barTreino" class="chart-bar-fill" style="background: #22c55e;"></div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="card-box">
-                    <h3>📅 Cronograma Diário da Semana (Segunda a Domingo)</h3>
-                    <p style="margin-bottom: 15px;">Detalhamento dia a dia correspondente ao calendário real da semana atual.</p>
-                    <div style="overflow-x: auto;">
-                        <table class="data-table">
-                            <thead>
-                                <tr>
-                                    <th>Dia da Semana</th>
-                                    <th>Estudo Realizado</th>
-                                    <th>Trabalho Realizado</th>
-                                    <th>Treino Realizado</th>
-                                </tr>
-                            </thead>
-                            <tbody id="tabelaDiasSemanaCorpo">
-                                <tr><td colspan="4" style="text-align: center; color: #71717a; font-style: italic;">Nenhum registro encontrado para esta semana.</td></tr>
-                            </tbody>
-                        </table>
-                    </div>
-                </div>
-            </div>
-
-            <!-- ABA 5: DADOS SEMANAIS -->
-            <div id="tab-dadossemanais" class="tab-content">
-                <div class="card-box">
-                    <h3>📂 Histórico de Arquivo de Dados Semanais</h3>
-                    <p style="margin-bottom: 20px;">Armazenamento organizado semana por semana com os intervalos de datas reais (Ex: Segunda a Domingo).</p>
-                    
-                    <div style="margin-bottom: 15px; display: flex; gap: 10px; align-items: center;">
-                        <button class="action-btn" onclick="arquivarSemanaAtual()" style="padding: 10px 16px;">📥 Fechar e Arquivar Semana Atual</button>
-                    </div>
-
-                    <div style="overflow-x: auto;">
-                        <table class="data-table">
-                            <thead>
-                                <tr>
-                                    <th>Período da Semana</th>
-                                    <th>Estudo (Real / Meta)</th>
-                                    <th>Trabalho (Real / Meta)</th>
-                                    <th>Treino (Real / Meta)</th>
-                                    <th style="text-align: center;">Ação</th>
-                                </tr>
-                            </thead>
-                            <tbody id="tabelaDadosSemanaisCorpo">
-                                <tr><td colspan="5" style="text-align: center; color: #71717a; font-style: italic;">Nenhuma semana arquivada ainda.</td></tr>
-                            </tbody>
-                        </table>
-                    </div>
-                </div>
-            </div>
-
-            <!-- ABA 6: METAS MENSAIS -->
-            <div id="tab-mensal" class="tab-content">
-                <div class="card-box">
-                    <h3>📊 Configuração das Metas Mensais</h3>
-                    <p style="margin-bottom: 15px;">Defina as metas totais que deseja cumprir ao longo do mês atual.</p>
-                    
-                    <div class="weekly-grid-inputs">
-                        <div>
-                            <label style="font-size: 11px; color: #71717a; text-transform: uppercase; font-weight: 600; display: block; margin-bottom: 5px;">Meta Estudo Mensal (h)</label>
-                            <input type="number" id="metaMensalEstudo" placeholder="Ex: 80" step="0.5">
-                        </div>
-                        <div>
-                            <label style="font-size: 11px; color: #71717a; text-transform: uppercase; font-weight: 600; display: block; margin-bottom: 5px;">Meta Trabalho Mensal (h)</label>
-                            <input type="number" id="metaMensalTrabalho" placeholder="Ex: 160" step="0.5">
-                        </div>
-                        <div>
-                            <label style="font-size: 11px; color: #71717a; text-transform: uppercase; font-weight: 600; display: block; margin-bottom: 5px;">Meta Treino Mensal (h)</label>
-                            <input type="number" id="metaMensalTreino" placeholder="Ex: 20" step="0.5">
-                        </div>
-                        <div style="display: flex; align-items: flex-end;">
-                            <button class="action-btn" onclick="salvarMetasMensais()" style="height: 41px; width: 100%;">Salvar Metas</button>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="card-box">
-                    <h3>📈 Gráfico de Progresso Mensal</h3>
-                    <p style="margin-bottom: 10px;">Acompanhamento consolidado das horas realizadas em relação às metas mensais estipuladas.</p>
-                    
-                    <div class="chart-bars-container">
-                        <div class="chart-row">
-                            <div class="chart-label-info">
-                                <span id="chartMensalEstudoTexto">Estudo: 0.0h / 0.0h</span>
-                                <span id="chartMensalEstudoPorc">0%</span>
-                            </div>
-                            <div class="chart-bar-track">
-                                <div id="barMensalEstudo" class="chart-bar-fill"></div>
-                            </div>
-                        </div>
-
-                        <div class="chart-row">
-                            <div class="chart-label-info">
-                                <span id="chartMensalTrabalhoTexto">Trabalho: 0.0h / 0.0h</span>
-                                <span id="chartMensalTrabalhoPorc">0%</span>
-                            </div>
-                            <div class="chart-bar-track">
-                                <div id="barMensalTrabalho" class="chart-bar-fill" style="background: #3b82f6;"></div>
-                            </div>
-                        </div>
-
-                        <div class="chart-row">
-                            <div class="chart-label-info">
-                                <span id="chartMensalTreinoTexto">Treino: 0.0h / 0.0h</span>
-                                <span id="chartMensalTreinoPorc">0%</span>
-                            </div>
-                            <div class="chart-bar-track">
-                                <div id="barMensalTreino" class="chart-bar-fill" style="background: #22c55e;"></div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="card-box">
-                    <h3>📅 Cronograma Diário do Mês Vigente</h3>
-                    <p style="margin-bottom: 15px;">Detalhamento diário de todas as datas reais do mês atual.</p>
-                    <div style="overflow-x: auto;">
-                        <table class="data-table">
-                            <thead>
-                                <tr>
-                                    <th>Data do Mês</th>
-                                    <th>Estudo Realizado</th>
-                                    <th>Trabalho Realizado</th>
-                                    <th>Treino Realizado</th>
-                                </tr>
-                            </thead>
-                            <tbody id="tabelaDiasMesCorpo">
-                                <tr><td colspan="4" style="text-align: center; color: #71717a; font-style: italic;">Nenhum registro encontrado para este mês.</td></tr>
-                            </tbody>
-                        </table>
-                    </div>
-                </div>
-            </div>
-
-            <!-- ABA 7: DADOS MENSAIS -->
-            <div id="tab-dadosmensais" class="tab-content">
-                <div class="card-box">
-                    <h3>📂 Histórico de Arquivo de Dados Mensais</h3>
-                    <p style="margin-bottom: 20px;">Armazenamento organizado mês a mês com os intervalos reais de cada período.</p>
-                    
-                    <div style="margin-bottom: 15px; display: flex; gap: 10px; align-items: center;">
-                        <button class="action-btn" onclick="arquivarMesAtual()" style="padding: 10px 16px;">📥 Fechar e Arquivar Mês Atual</button>
-                    </div>
-
-                    <div style="overflow-x: auto;">
-                        <table class="data-table">
-                            <thead>
-                                <tr>
-                                    <th>Período do Mês</th>
-                                    <th>Estudo (Real / Meta)</th>
-                                    <th>Trabalho (Real / Meta)</th>
-                                    <th>Treino (Real / Meta)</th>
-                                    <th style="text-align: center;">Ação</th>
-                                </tr>
-                            </thead>
-                            <tbody id="tabelaDadosMensaisCorpo">
-                                <tr><td colspan="5" style="text-align: center; color: #71717a; font-style: italic;">Nenhum mês arquivado ainda.</td></tr>
-                            </tbody>
-                        </table>
-                    </div>
-                </div>
-            </div>
-
-            <!-- ABA 8: ANÁLISE -->
-            <div id="tab-analise" class="tab-content"><div class="card-box"><h3>Análise de Ritmo</h3></div></div>
-
-            <div class="user-footer">
-                <span id="userDisplay">Logado como: </span>
-                <button class="logout-btn" onclick="fazerLogout()">Sair da Conta</button>
-            </div>
-        </div>
-
-    </div>
-
-    <script>
-        function getChaveUsuario(sufixo) {
-            const email = localStorage.getItem('oneday_user') || 'convidado';
-            return `oneday_${email}_${sufixo}`;
-        }
-
-        window.onload = function() {
-    const usuarioSalvo = localStorage.getItem('oneday_user');
-    if (usuarioSalvo) {
-        mostrarApp(usuarioSalvo);
-        carregarDadosSalvos();
-        // Adicione esta linha para renderizar o painel ao carregar os dados salvos:
-        const salvos = JSON.parse(localStorage.getItem(getChaveUsuario('dados_dia')));
-        if (salvos) renderizarPainelMeuDia(salvos);
-
-        carregarTabelaHistorico();
-        carregarObjetivoDayOne();
-        carregarMetasSemanais();
-        carregarDadosSemanaisHistorico();
-        carregarMetasMensais();
-        carregarDadosMensaisHistorico();
-    }
-    calcularAlvoTotalPreview();
-};
-        function fazerLogin() {
-            const email = document.getElementById('emailInput').value.trim().toLowerCase();
-            if (email === '' || !email.endsWith('@gmail.com')) {
-                alert('Insira um e-mail válido terminado em @gmail.com.');
-                return;
-            }
-            localStorage.setItem('oneday_user', email);
-            mostrarApp(email);
-            carregarDadosSalvos();
-            carregarTabelaHistorico();
-            carregarObjetivoDayOne();
-            carregarMetasSemanais();
-            carregarDadosSemanaisHistorico();
-            carregarMetasMensais();
-            carregarDadosMensaisHistorico();
-        }
-
-        function mostrarApp(email) {
-            document.getElementById('loginScreen').classList.remove('active');
-            document.getElementById('appScreen').classList.add('active');
-            document.getElementById('userDisplay').innerText = 'Logado como: ' + email;
-        }
-
-        function fazerLogout() {
-            localStorage.removeItem('oneday_user');
-            document.getElementById('appScreen').classList.remove('active');
-            document.getElementById('loginScreen').classList.add('active');
-            document.getElementById('emailInput').value = '';
-        }
-
-        function mudarAba(abaId, event) {
-            document.querySelectorAll('.tab-content').forEach(el => el.classList.remove('active'));
-            document.querySelectorAll('.tab-btn').forEach(el => el.classList.remove('active'));
-            document.getElementById('tab-' + abaId).classList.add('active');
-            event.currentTarget.classList.add('active');
-            if (abaId === 'semanal') {
-                atualizarGraficoETabelaSemanal();
-            }
-            if (abaId === 'dadossemanais') {
-                carregarDadosSemanaisHistorico();
-            }
-            if (abaId === 'mensal') {
-                atualizarGraficoETabelaMensal();
-            }
-            if (abaId === 'dadosmensais') {
-                carregarDadosMensaisHistorico();
-            }
-        }
-
-        function atualizarNomeArquivo(input) {
-            const label = document.getElementById('uploadLabelText');
-            if (input.files && input.files[0]) {
-                label.innerText = '📷 ' + input.files[0].name;
-            } else {
-                label.innerText = '📁 Foto';
-            }
-        }
-
-        function calcularAlvoTotalPreview() {
-            const precoCarro = parseFloat(document.getElementById('objPrecoCarro').value) || 0;
-            const valorCDB = precoCarro * 0.5;
-            const alvoTotal = precoCarro + valorCDB;
-            document.getElementById('previewAlvoTotal').innerText = alvoTotal.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
-        }
-
-        function salvarObjetivoDayOne() {
-            const nome = document.getElementById('objNome').value.trim();
-            const precoCarro = parseFloat(document.getElementById('objPrecoCarro').value) || 0;
-            const qtdTempo = parseInt(document.getElementById('objQtdTempo').value) || 1;
-            const tipoTempo = document.getElementById('objTipoTempo').value;
-            const inputFoto = document.getElementById('objFotoInput');
-
-            if (!nome || !precoCarro || !qtdTempo) {
-                alert('Preencha todos os campos do objetivo.');
-                return;
-            }
-
-            const valorCDB = precoCarro * 0.5;
-            const alvoTotal = precoCarro + valorCDB;
-            const dataCriacao = new Date().toLocaleDateString('pt-BR');
-            const timestampCriacao = Date.now();
-
-            const salvarComFoto = (fotoBase64) => {
-                const dadosObjetivo = {
-                    nome, precoCarro, valorCDB, alvoTotal, qtdTempo, tipoTempo, dataCriacao, timestampCriacao, foto: fotoBase64
-                };
-                localStorage.setItem(getChaveUsuario('dayone_obj'), JSON.stringify(dadosObjetivo));
-                renderizarObjetivoDayOne(dadosObjetivo);
-                alert('Objetivo salvo e persistido com sucesso no seu perfil!');
-            };
-
-            const arquivo = inputFoto.files[0];
-            if (arquivo) {
-                const reader = new FileReader();
-                reader.onload = function(e) { salvarComFoto(e.target.result); };
-                reader.readAsDataURL(arquivo);
-            } else {
-                let objetivoAntigo = JSON.parse(localStorage.getItem(getChaveUsuario('dayone_obj'))) || {};
-                salvarComFoto(objetivoAntigo.foto || '');
-            }
-        }
-
-        function carregarObjetivoDayOne() {
-            const salvo = localStorage.getItem(getChaveUsuario('dayone_obj'));
-            if (salvo) {
-                const dados = JSON.parse(salvo);
-                document.getElementById('objNome').value = dados.nome || '';
-                document.getElementById('objPrecoCarro').value = dados.precoCarro || 100000;
-                document.getElementById('objQtdTempo').value = dados.qtdTempo || 12;
-                document.getElementById('objTipoTempo').value = dados.tipoTempo || 'meses';
-                calcularAlvoTotalPreview();
-                renderizarObjetivoDayOne(dados);
-            } else {
-                calcularAlvoTotalPreview();
-                document.getElementById('displayObjetivoContainer').innerHTML = `
-                    <div class="card-box" style="text-align: center; color: #71717a; font-style: italic;">
-                        Nenhum objetivo cadastrado. Preencha o painel acima para traçar sua rota.
-                    </div>
-                `;
-                document.getElementById('cronogramaBox').style.display = 'none';
-            }
-        }
-
-        function renderizarObjetivoDayOne(dados) {
-            const container = document.getElementById('displayObjetivoContainer');
-            const cronogramaBox = document.getElementById('cronogramaBox');
-            const bgStyle = dados.foto ? `background-image: url('${dados.foto}');` : '';
-            const textoFoto = dados.foto ? '' : '<span>Sem Imagem</span>';
-            const formatBRL = (val) => val.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
-
-            const agora = Date.now();
-            const diffDias = Math.floor((agora - (dados.timestampCriacao || agora)) / (1000 * 60 * 60 * 24));
-
-            container.innerHTML = `
-                <div class="active-objective-card">
-                    <div class="objective-image-preview" style="${bgStyle}">${textoFoto}</div>
-                    <div class="objective-details">
-                        <h4>🎯 Alvo Principal Ativo</h4>
-                        <h2>${dados.nome}</h2>
-                        
-                        <div class="objective-metrics">
-                            <div class="metric-box"><label>Carro</label><span>${formatBRL(dados.precoCarro)}</span></div>
-                            <div class="metric-box"><label>50% CDB</label><span style="color: #22c55e;">${formatBRL(dados.valorCDB)}</span></div>
-                            <div class="metric-box"><label>Alvo (150%)</label><span style="color: #ef4444;">${formatBRL(dados.alvoTotal)}</span></div>
-                        </div>
-
-                        <div style="font-size: 12px; color: #a1a1aa; margin-bottom: 6px;">📅 Criado em: <strong>${dados.dataCriacao || 'Hoje'}</strong> (${diffDias} dias atrás)</div>
-                        <div style="font-size: 12px; color: #a1a1aa; margin-bottom: 15px;">⏳ Prazo limite: <strong>${dados.qtdTempo} ${dados.tipoTempo}</strong></div>
-
-                        <button class="action-btn" onclick="limparObjetivoDayOne()" style="background: transparent; color: #ef4444; border: 1px solid #27272a; padding: 5px 10px; font-size: 11px;">Redefinir Objetivo</button>
-                    </div>
-                </div>
-            `;
-
-            cronogramaBox.style.display = 'block';
-            gerarCronogramaDinamico(dados);
-        }
-
-        function gerarCronogramaDinamico(dados) {
-            const corpoTabela = document.getElementById('tabelaCronogramaCorpo');
-            let html = '';
-            const totalPassos = dados.qtdTempo;
-            const valorPorPasso = dados.alvoTotal / totalPassos;
-            const dataInicio = new Date(dados.timestampCriacao || Date.now());
-
-            for (let i = 1; i <= totalPassos; i++) {
-                let dataLimitePasso = new Date(dataInicio);
-                if (dados.tipoTempo === 'meses') {
-                    dataLimitePasso.setMonth(dataLimitePasso.getMonth() + i);
-                } else {
-                    dataLimitePasso.setFullYear(dataLimitePasso.getFullYear() + i);
-                }
-
-                const hoje = new Date();
-                let statusBadge = '';
-                if (hoje >= dataLimitePasso) {
-                    statusBadge = `<span class="status-badge status-concluido">Período Concluído</span>`;
-                } else if (hoje < dataLimitePasso && hoje >= new Date(dataLimitePasso).setMonth(dataLimitePasso.getMonth() - (dados.tipoTempo === 'meses' ? 1 : 12))) {
-                    statusBadge = `<span class="status-badge status-andamento">Em Andamento (Atual)</span>`;
-                } else {
-                    statusBadge = `<span class="status-badge" style="background:#27272a; color:#a1a1aa;">Futuro</span>`;
-                }
-
-                html += `
-                    <tr>
-                        <td style="font-weight: 600; color: #fff;">${i}º ${dados.tipoTempo === 'meses' ? 'Mês' : 'Ano'}</td>
-                        <td>Até ${dataLimitePasso.toLocaleDateString('pt-BR')}</td>
-                        <td>${statusBadge}</td>
-                        <td style="color: #22c55e; font-weight: 700;">${(valorPorPasso * i).toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' })}</td>
-                    </tr>
-                `;
-            }
-            corpoTabela.innerHTML = html;
-        }
-
-        function limparObjetivoDayOne() {
-            if (confirm('Deseja redefinir seu objetivo principal?')) {
-                localStorage.removeItem(getChaveUsuario('dayone_obj'));
-                document.getElementById('objNome').value = 'Civic G10';
-                document.getElementById('objPrecoCarro').value = '100000';
-                document.getElementById('objQtdTempo').value = '12';
-                document.getElementById('objTipoTempo').value = 'meses';
-                document.getElementById('uploadLabelText').innerText = '📁 Foto';
-                document.getElementById('objFotoInput').value = '';
-                calcularAlvoTotalPreview();
-                carregarObjetivoDayOne();
-            }
-        }
-
-        function salvarMetasSemanais() {
-            const metaEstudo = parseFloat(document.getElementById('metaSemanalEstudo').value) || 0;
-            const metaTrabalho = parseFloat(document.getElementById('metaSemanalTrabalho').value) || 0;
-            const metaTreino = parseFloat(document.getElementById('metaSemanalTreino').value) || 0;
-
-            const metas = { metaEstudo, metaTrabalho, metaTreino };
-            localStorage.setItem(getChaveUsuario('metas_semanais'), JSON.stringify(metas));
-            atualizarGraficoETabelaSemanal();
-            alert('Metas semanais salvas com sucesso!');
-        }
-
-        function carregarMetasSemanais() {
-            const salvo = localStorage.getItem(getChaveUsuario('metas_semanais'));
-            if (salvo) {
-                const metas = JSON.parse(salvo);
-                document.getElementById('metaSemanalEstudo').value = metas.metaEstudo || '';
-                document.getElementById('metaSemanalTrabalho').value = metas.metaTrabalho || '';
-                document.getElementById('metaSemanalTreino').value = metas.metaTreino || '';
-            }
-            atualizarGraficoETabelaSemanal();
-        }
-
-        function obterDatasDaSemanaAtual() {
-            const hoje = new Date();
-            const diaSemana = hoje.getDay();
-            const diffParaSegunda = diaSemana === 0 ? -6 : 1 - diaSemana;
-            
-            const segunda = new Date(hoje);
-            segunda.setDate(hoje.getDate() + diffParaSegunda);
-
-            let dias = [];
-            for (let i = 0; i < 7; i++) {
-                let d = new Date(segunda);
-                d.setDate(segunda.getDate() + i);
-                dias.push(d.toLocaleDateString('pt-BR', { day: '2-digit', month: '2-digit', year: 'numeric' }));
-            }
-            return dias;
-        }
-
-        function atualizarGraficoETabelaSemanal() {
-            const metasSalvas = JSON.parse(localStorage.getItem(getChaveUsuario('metas_semanais'))) || { metaEstudo: 0, metaTrabalho: 0, metaTreino: 0 };
-            const historico = JSON.parse(localStorage.getItem(getChaveUsuario('historico'))) || [];
-
-            let totalEstudoReal = 0;
-            let totalTrabalhoReal = 0;
-            let totalTreinoReal = 0;
-
-            const datasSemana = obterDatasDaSemanaAtual();
-            const nomesDias = ["Segunda-feira", "Terça-feira", "Quarta-feira", "Quinta-feira", "Sexta-feira", "Sábado", "Domingo"];
-
-            let diasSemanaMap = nomesDias.map((nome, index) => ({
-                nome: `${nome} (${datasSemana[index]})`,
-                dataStr: datasSemana[index],
-                estudo: 0,
-                trabalho: 0,
-                treino: 0
-            }));
-
-            historico.forEach(item => {
-                const dataItemApenas = item.data.split(' ')[0];
-                const indexDia = datasSemana.indexOf(dataItemApenas);
-                
-                if (indexDia !== -1) {
-                    diasSemanaMap[indexDia].estudo += (item.rEstudo || 0);
-                    diasSemanaMap[indexDia].trabalho += (item.rTrabalho || 0);
-                    diasSemanaMap[indexDia].treino += (item.rMusculacao || 0);
-                }
-            });
-
-            diasSemanaMap.forEach(dia => {
-                totalEstudoReal += dia.estudo;
-                totalTrabalhoReal += dia.trabalho;
-                totalTreinoReal += dia.treino;
-            });
-
-            const calcPorc = (real, meta) => meta > 0 ? Math.min(Math.round((real / meta) * 100), 100) : 0;
-
-            document.getElementById('chartEstudoTexto').innerText = `Estudo: ${totalEstudoReal.toFixed(1)}h / ${metasSalvas.metaEstudo.toFixed(1)}h`;
-            const pEstudo = calcPorc(totalEstudoReal, metasSalvas.metaEstudo);
-            document.getElementById('chartEstudoPorc').innerText = pEstudo + '%';
-            document.getElementById('barEstudo').style.width = pEstudo + '%';
-
-            document.getElementById('chartTrabalhoTexto').innerText = `Trabalho: ${totalTrabalhoReal.toFixed(1)}h / ${metasSalvas.metaTrabalho.toFixed(1)}h`;
-            const pTrabalho = calcPorc(totalTrabalhoReal, metasSalvas.metaTrabalho);
-            document.getElementById('chartTrabalhoPorc').innerText = pTrabalho + '%';
-            document.getElementById('barTrabalho').style.width = pTrabalho + '%';
-
-            document.getElementById('chartTreinoTexto').innerText = `Treino: ${totalTreinoReal.toFixed(1)}h / ${metasSalvas.metaTreino.toFixed(1)}h`;
-            const pTreino = calcPorc(totalTreinoReal, metasSalvas.metaTreino);
-            document.getElementById('chartTreinoPorc').innerText = pTreino + '%';
-            document.getElementById('barTreino').style.width = pTreino + '%';
-
-            const corpoTabelaDias = document.getElementById('tabelaDiasSemanaCorpo');
-            let htmlDias = '';
-            diasSemanaMap.forEach(dia => {
-                htmlDias += `
-                    <tr>
-                        <td style="font-weight: 600; color: #fff;">${dia.nome}</td>
-                        <td>${dia.estudo.toFixed(1)}h</td>
-                        <td>${dia.trabalho.toFixed(1)}h</td>
-                        <td>${dia.treino.toFixed(1)}h</td>
-                    </tr>
-                `;
-            });
-            corpoTabelaDias.innerHTML = htmlDias;
-        }
-
-        function arquivarSemanaAtual() {
-            const metas = JSON.parse(localStorage.getItem(getChaveUsuario('metas_semanais'))) || { metaEstudo: 0, metaTrabalho: 0, metaTreino: 0 };
-            const historico = JSON.parse(localStorage.getItem(getChaveUsuario('historico'))) || [];
-            const datasSemana = obterDatasDaSemanaAtual();
-
-            let totalEstudoReal = 0;
-            let totalTrabalhoReal = 0;
-            let totalTreinoReal = 0;
-
-            historico.forEach(item => {
-                const dataItemApenas = item.data.split(' ')[0];
-                if (datasSemana.includes(dataItemApenas)) {
-                    totalEstudoReal += (item.rEstudo || 0);
-                    totalTrabalhoReal += (item.rTrabalho || 0);
-                    totalTreinoReal += (item.rMusculacao || 0);
-                }
-            });
-
-            const periodoReal = `${datasSemana[0]} até ${datasSemana[6]}`;
-
-            const semanaRegistro = {
-                id: Date.now(),
-                periodo: periodoReal,
-                rEstudo: totalEstudoReal,
-                mEstudo: metas.metaEstudo,
-                rTrabalho: totalTrabalhoReal,
-                mTrabalho: metas.metaTrabalho,
-                rTreino: totalTreinoReal,
-                mTreino: metas.metaTreino
-            };
-
-            let dadosSemanaisList = JSON.parse(localStorage.getItem(getChaveUsuario('dados_semanais_historico'))) || [];
-            dadosSemanaisList = dadosSemanaisList.filter(el => el.periodo !== periodoReal);
-            dadosSemanaisList.unshift(semanaRegistro);
-            
-            localStorage.setItem(getChaveUsuario('dados_semanais_historico'), JSON.stringify(dadosSemanaisList));
-            carregarDadosSemanaisHistorico();
-            alert(`Semana (${periodoReal}) arquivada com sucesso na aba Dados Semanais!`);
-        }
-
-        function carregarDadosSemanaisHistorico() {
-            const corpo = document.getElementById('tabelaDadosSemanaisCorpo');
-            let lista = JSON.parse(localStorage.getItem(getChaveUsuario('dados_semanais_historico'))) || [];
-
-            if (lista.length === 0) {
-                corpo.innerHTML = `<tr><td colspan="5" style="text-align: center; color: #71717a; font-style: italic;">Nenhuma semana arquivada ainda.</td></tr>`;
-                return;
-            }
-
-            let html = '';
-            lista.forEach(item => {
-                html += `
-                    <tr>
-                        <td style="font-weight: 600; color: #fff;">${item.periodo}</td>
-                        <td>${item.rEstudo.toFixed(1)}h / <span style="color: #71717a;">${item.mEstudo.toFixed(1)}h</span></td>
-                        <td>${item.rTrabalho.toFixed(1)}h / <span style="color: #71717a;">${item.mTrabalho.toFixed(1)}h</span></td>
-                        <td>${item.rTreino.toFixed(1)}h / <span style="color: #71717a;">${item.mTreino.toFixed(1)}h</span></td>
-                        <td style="text-align: center;"><button class="delete-row-btn" onclick="excluirDadoSemanal(${item.id})">🗑️</button></td>
-                    </tr>
-                `;
-            });
-            corpo.innerHTML = html;
-        }
-
-        function excluirDadoSemanal(id) {
-            if (confirm('Deseja excluir este registro de semana arquivada?')) {
-                let lista = JSON.parse(localStorage.getItem(getChaveUsuario('dados_semanais_historico'))) || [];
-                lista = lista.filter(el => el.id !== id);
-                localStorage.setItem(getChaveUsuario('dados_semanais_historico'), JSON.stringify(lista));
-                carregarDadosSemanaisHistorico();
-            }
-        }
-
-        // --- FUNÇÕES DE METAS E DADOS MENSAIS ---
-        function salvarMetasMensais() {
-            const metaEstudo = parseFloat(document.getElementById('metaMensalEstudo').value) || 0;
-            const metaTrabalho = parseFloat(document.getElementById('metaMensalTrabalho').value) || 0;
-            const metaTreino = parseFloat(document.getElementById('metaMensalTreino').value) || 0;
-
-            const metas = { metaEstudo, metaTrabalho, metaTreino };
-            localStorage.setItem(getChaveUsuario('metas_mensais'), JSON.stringify(metas));
-            atualizarGraficoETabelaMensal();
-            alert('Metas mensais salvas com sucesso!');
-        }
-
-        function carregarMetasMensais() {
-            const salvo = localStorage.getItem(getChaveUsuario('metas_mensais'));
-            if (salvo) {
-                const metas = JSON.parse(salvo);
-                document.getElementById('metaMensalEstudo').value = metas.metaEstudo || '';
-                document.getElementById('metaMensalTrabalho').value = metas.metaTrabalho || '';
-                document.getElementById('metaMensalTreino').value = metas.metaTreino || '';
-            }
-            atualizarGraficoETabelaMensal();
-        }
-
-        function obterDatasDoMesAtual() {
-            const hoje = new Date();
-            const ano = hoje.getFullYear();
-            const mes = hoje.getMonth(); // 0 a 11
-            const ultimoDia = new Date(ano, mes + 1, 0).getDate();
-
-            let dias = [];
-            for (let i = 1; i <= ultimoDia; i++) {
-                let d = new Date(ano, mes, i);
-                dias.push(d.toLocaleDateString('pt-BR', { day: '2-digit', month: '2-digit', year: 'numeric' }));
-            }
-            return dias;
-        }
-
-        function atualizarGraficoETabelaMensal() {
-            const metasSalvas = JSON.parse(localStorage.getItem(getChaveUsuario('metas_mensais'))) || { metaEstudo: 0, metaTrabalho: 0, metaTreino: 0 };
-            const historico = JSON.parse(localStorage.getItem(getChaveUsuario('historico'))) || [];
-
-            let totalEstudoReal = 0;
-            let totalTrabalhoReal = 0;
-            let totalTreinoReal = 0;
-
-            const datasMes = obterDatasDoMesAtual();
-            let diasMesMap = datasMes.map((dataStr) => ({
-                dataStr: dataStr,
-                estudo: 0,
-                trabalho: 0,
-                treino: 0
-            }));
-
-            historico.forEach(item => {
-                const dataItemApenas = item.data.split(' ')[0];
-                const indexDia = datasMes.indexOf(dataItemApenas);
-                
-                if (indexDia !== -1) {
-                    diasMesMap[indexDia].estudo += (item.rEstudo || 0);
-                    diasMesMap[indexDia].trabalho += (item.rTrabalho || 0);
-                    diasMesMap[indexDia].treino += (item.rMusculacao || 0);
-                }
-            });
-
-            diasMesMap.forEach(dia => {
-                totalEstudoReal += dia.estudo;
-                totalTrabalhoReal += dia.trabalho;
-                totalTreinoReal += dia.treino;
-            });
-
-            const calcPorc = (real, meta) => meta > 0 ? Math.min(Math.round((real / meta) * 100), 100) : 0;
-
-            document.getElementById('chartMensalEstudoTexto').innerText = `Estudo: ${totalEstudoReal.toFixed(1)}h / ${metasSalvas.metaEstudo.toFixed(1)}h`;
-            const pEstudo = calcPorc(totalEstudoReal, metasSalvas.metaEstudo);
-            document.getElementById('chartMensalEstudoPorc').innerText = pEstudo + '%';
-            document.getElementById('barMensalEstudo').style.width = pEstudo + '%';
-
-            document.getElementById('chartMensalTrabalhoTexto').innerText = `Trabalho: ${totalTrabalhoReal.toFixed(1)}h / ${metasSalvas.metaTrabalho.toFixed(1)}h`;
-            const pTrabalho = calcPorc(totalTrabalhoReal, metasSalvas.metaTrabalho);
-            document.getElementById('chartMensalTrabalhoPorc').innerText = pTrabalho + '%';
-            document.getElementById('barMensalTrabalho').style.width = pTrabalho + '%';
-
-            document.getElementById('chartMensalTreinoTexto').innerText = `Treino: ${totalTreinoReal.toFixed(1)}h / ${metasSalvas.metaTreino.toFixed(1)}h`;
-            const pTreino = calcPorc(totalTreinoReal, metasSalvas.metaTreino);
-            document.getElementById('chartMensalTreinoPorc').innerText = pTreino + '%';
-            document.getElementById('barMensalTreino').style.width = pTreino + '%';
-
-            const corpoTabelaDias = document.getElementById('tabelaDiasMesCorpo');
-            let htmlDias = '';
-            diasMesMap.forEach(dia => {
-                htmlDias += `
-                    <tr>
-                        <td style="font-weight: 600; color: #fff;">${dia.dataStr}</td>
-                        <td>${dia.estudo.toFixed(1)}h</td>
-                        <td>${dia.trabalho.toFixed(1)}h</td>
-                        <td>${dia.treino.toFixed(1)}h</td>
-                    </tr>
-                `;
-            });
-            corpoTabelaDias.innerHTML = htmlDias;
-        }
-
-        function arquivarMesAtual() {
-            const metas = JSON.parse(localStorage.getItem(getChaveUsuario('metas_mensais'))) || { metaEstudo: 0, metaTrabalho: 0, metaTreino: 0 };
-            const historico = JSON.parse(localStorage.getItem(getChaveUsuario('historico'))) || [];
-            const datasMes = obterDatasDoMesAtual();
-
-            let totalEstudoReal = 0;
-            let totalTrabalhoReal = 0;
-            let totalTreinoReal = 0;
-
-            historico.forEach(item => {
-                const dataItemApenas = item.data.split(' ')[0];
-                if (datasMes.includes(dataItemApenas)) {
-                    totalEstudoReal += (item.rEstudo || 0);
-                    totalTrabalhoReal += (item.rTrabalho || 0);
-                    totalTreinoReal += (item.rMusculacao || 0);
-                }
-            });
-
-            const periodoReal = `${datasMes[0]} até ${datasMes[datasMes.length - 1]}`;
-
-            const mesRegistro = {
-                id: Date.now(),
-                periodo: periodoReal,
-                rEstudo: totalEstudoReal,
-                mEstudo: metas.metaEstudo,
-                rTrabalho: totalTrabalhoReal,
-                mTrabalho: metas.metaTrabalho,
-                rTreino: totalTreinoReal,
-                mTreino: metas.metaTreino
-            };
-
-            let dadosMensaisList = JSON.parse(localStorage.getItem(getChaveUsuario('dados_mensais_historico'))) || [];
-            dadosMensaisList = dadosMensaisList.filter(el => el.periodo !== periodoReal);
-            dadosMensaisList.unshift(mesRegistro);
-            
-            localStorage.setItem(getChaveUsuario('dados_mensais_historico'), JSON.stringify(dadosMensaisList));
-            carregarDadosMensaisHistorico();
-            alert(`Mês (${periodoReal}) arquivado com sucesso na aba Dados Mensais!`);
-        }
-
-        function carregarDadosMensaisHistorico() {
-            const corpo = document.getElementById('tabelaDadosMensaisCorpo');
-            let lista = JSON.parse(localStorage.getItem(getChaveUsuario('dados_mensais_historico'))) || [];
-
-            if (lista.length === 0) {
-                corpo.innerHTML = `<tr><td colspan="5" style="text-align: center; color: #71717a; font-style: italic;">Nenhum mês arquivado ainda.</td></tr>`;
-                return;
-            }
-
-            let html = '';
-            lista.forEach(item => {
-                html += `
-                    <tr>
-                        <td style="font-weight: 600; color: #fff;">${item.periodo}</td>
-                        <td>${item.rEstudo.toFixed(1)}h / <span style="color: #71717a;">${item.mEstudo.toFixed(1)}h</span></td>
-                        <td>${item.rTrabalho.toFixed(1)}h / <span style="color: #71717a;">${item.mTrabalho.toFixed(1)}h</span></td>
-                        <td>${item.rTreino.toFixed(1)}h / <span style="color: #71717a;">${item.mTreino.toFixed(1)}h</span></td>
-                        <td style="text-align: center;"><button class="delete-row-btn" onclick="excluirDadoMensal(${item.id})">🗑️</button></td>
-                    </tr>
-                `;
-            });
-            corpo.innerHTML = html;
-        }
-
-        function excluirDadoMensal(id) {
-            if (confirm('Deseja excluir este registro de mês arquivado?')) {
-                let lista = JSON.parse(localStorage.getItem(getChaveUsuario('dados_mensais_historico'))) || [];
-                lista = lista.filter(el => el.id !== id);
-                localStorage.setItem(getChaveUsuario('dados_mensais_historico'), JSON.stringify(lista));
-                carregarDadosMensaisHistorico();
-            }
-        }
-
-        function salvarRegistrosDia() {
-    const dataHoje = new Date().toLocaleDateString('pt-BR') + ' ' + new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
-    
-    const dados = {
-        id: Date.now(),
-        data: dataHoje,
-        mEstudo: parseFloat(document.getElementById('metaInputEstudo').value) || 0,
-        mTrabalho: parseFloat(document.getElementById('metaInputTrabalho').value) || 0,
-        mMusculacao: parseFloat(document.getElementById('metaInputMusculacao').value) || 0,
-        mCardio: parseFloat(document.getElementById('metaInputCardio').value) || 0,
-        mGanhos: parseFloat(document.getElementById('metaInputGanhos').value) || 0,
-        rEstudo: parseFloat(document.getElementById('inputEstudo').value) || 0,
-        rTrabalho: parseFloat(document.getElementById('inputTrabalho').value) || 0,
-        rMusculacao: parseFloat(document.getElementById('inputMusculacao').value) || 0,
-        rCardio: parseFloat(document.getElementById('inputCardio').value) || 0,
-        rGanhos: parseFloat(document.getElementById('inputGanhos').value) || 0
-    };
-
-    localStorage.setItem(getChaveUsuario('dados_dia'), JSON.stringify(dados));
-    
-    let historico = JSON.parse(localStorage.getItem(getChaveUsuario('historico'))) || [];
-    historico.unshift(dados);
-    localStorage.setItem(getChaveUsuario('historico'), JSON.stringify(historico));
-
-    // Atualiza a interface visualmente na aba Meu Dia
-    renderizarPainelMeuDia(dados);
-    
-    carregarTabelaHistorico();
-    atualizarGraficoETabelaSemanal();
-    atualizarGraficoETabelaMensal();
-    alert('Dados salvos e comparados com sucesso!');
-}
-
-function renderizarPainelMeuDia(dados) {
-    // Atualiza Cards de Metas
-    document.getElementById('metaEstudoVal').innerText = `${dados.mEstudo.toFixed(1)}h`;
-    document.getElementById('metaTrabalhoVal').innerText = `${dados.mTrabalho.toFixed(1)}h`;
-    document.getElementById('metaMusculacaoVal').innerText = `${dados.mMusculacao.toFixed(1)}h`;
-    document.getElementById('metaCardioVal').innerText = `${dados.mCardio.toFixed(1)}h`;
-    document.getElementById('metaGanhosVal').innerText = dados.mGanhos.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
-
-    // Atualiza Cards de Realizado
-    document.getElementById('realEstudo').innerText = `${dados.rEstudo.toFixed(1)}h`;
-    document.getElementById('realTrabalho').innerText = `${dados.rTrabalho.toFixed(1)}h`;
-    document.getElementById('realMusculacao').innerText = `${dados.rMusculacao.toFixed(1)}h`;
-    document.getElementById('realCardio').innerText = `${dados.rCardio.toFixed(1)}h`;
-    document.getElementById('realGanhos').innerText = dados.rGanhos.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
-
-    // Gera o Comparativo e Feedback do Dia
-    const feedbackContainer = document.getElementById('feedbackContainer');
-    let feedbacksHtml = '';
-
-    const avaliarItem = (nome, real, meta, unidade = 'h') => {
-        if (meta === 0 && real === 0) return '';
-        if (real >= meta) {
-            return `<div class="feedback-item" style="border-color: rgba(34, 197, 94, 0.3); background: rgba(34, 197, 94, 0.05); color: #22c55e;">✅ <strong>${nome}:</strong> Meta batida ou superada! (${real}${unidade} realizados de ${meta}${unidade} esperadas).</div>`;
-        } else {
-            const diff = (meta - real).toFixed(1);
-            return `<div class="feedback-item" style="border-color: rgba(239, 68, 68, 0.3); background: rgba(239, 68, 68, 0.05); color: #ef4444;">⚠️ <strong>${nome}:</strong> Abaixo da meta por ${diff}${unidade}. Faltou foco para atingir os ${meta}${unidade}.</div>`;
-        }
-    };
-
-    feedbacksHtml += avaliarItem('Estudo', dados.rEstudo, dados.mEstudo, 'h');
-    feedbacksHtml += avaliarItem('Trabalho', dados.rTrabalho, dados.mTrabalho, 'h');
-    feedbacksHtml += avaliarItem('Musculação', dados.rMusculacao, dados.mMusculacao, 'h');
-    feedbacksHtml += avaliarItem('Cardio', dados.rCardio, dados.mCardio, 'h');
-    
-    // Ganhos Financeiros
-    if (dados.mGanhos > 0 || dados.rGanhos > 0) {
-        if (dados.rGanhos >= dados.mGanhos) {
-            feedbacksHtml += `<div class="feedback-item" style="border-color: rgba(34, 197, 94, 0.3); background: rgba(34, 197, 94, 0.05); color: #22c55e;">✅ <strong>Ganhos:</strong> Meta financeira alcançada com sucesso!</div>`;
-        } else {
-            feedbacksHtml += `<div class="feedback-item" style="border-color: rgba(239, 68, 68, 0.3); background: rgba(239, 68, 68, 0.05); color: #ef4444;">⚠️ <strong>Ganhos:</strong> Abaixo do projetado financeiramente para hoje.</div>`;
-        }
-    }
-
-    if (feedbacksHtml === '') {
-        feedbacksHtml = `<div class="feedback-item" style="color: #a1a1aa; font-style: italic;">Nenhuma meta ou dado relevante preenchido para comparação hoje.</div>`;
-    }
-
-    feedbackContainer.innerHTML = feedbacksHtml;
-}
-        function carregarDadosSalvos() {
-            const salvos = localStorage.getItem(getChaveUsuario('dados_dia'));
-            if (salvos) {
-                const dados = JSON.parse(salvos);
-                document.getElementById('metaInputEstudo').value = dados.mEstudo || '';
-                document.getElementById('metaInputTrabalho').value = dados.mTrabalho || '';
-                document.getElementById('metaInputMusculacao').value = dados.mMusculacao || '';
-                document.getElementById('metaInputCardio').value = dados.mCardio || '';
-                document.getElementById('metaInputGanhos').value = dados.mGanhos || '';
-                document.getElementById('inputEstudo').value = dados.rEstudo || '';
-                document.getElementById('inputTrabalho').value = dados.rTrabalho || '';
-                document.getElementById('inputMusculacao').value = dados.rMusculacao || '';
-                document.getElementById('inputCardio').value = dados.rCardio || '';
-                document.getElementById('inputGanhos').value = dados.rGanhos || '';
-            }
-        }
-
-        function carregarTabelaHistorico() {
-            const corpoTabela = document.getElementById('tabelaHistoricoCorpo');
-            let historico = JSON.parse(localStorage.getItem(getChaveUsuario('historico'))) || [];
-            if (historico.length === 0) {
-                corpoTabela.innerHTML = `<tr><td colspan="7" style="text-align: center; color: #71717a; font-style: italic;">Nenhum dado arquivado ainda.</td></tr>`;
-                return;
-            }
-            let html = '';
-            historico.forEach(item => {
-                html += `
-                    <tr>
-                        <td style="font-weight: 600; color: #a1a1aa;">${item.data}</td>
-                        <td>${item.rEstudo.toFixed(1)}h / <span style="color: #71717a;">${item.mEstudo.toFixed(1)}h</span></td>
-                        <td>${item.rTrabalho.toFixed(1)}h / <span style="color: #71717a;">${item.mTrabalho.toFixed(1)}h</span></td>
-                        <td>${item.rMusculacao.toFixed(1)}h / <span style="color: #71717a;">${item.mMusculacao.toFixed(1)}h</span></td>
-                        <td>${item.rCardio.toFixed(1)}h / <span style="color: #71717a;">${item.mCardio.toFixed(1)}h</span></td>
-                        <td>R$ ${item.rGanhos.toFixed(2)} / <span style="color: #71717a;">R$ ${item.mGanhos.toFixed(2)}</span></td>
-                        <td style="text-align: center;"><button class="delete-row-btn" onclick="excluirDiaHistorico(${item.id})">🗑️</button></td>
-                    </tr>
-                `;
-            });
-            corpoTabela.innerHTML = html;
-        }
-
-        function excluirDiaHistorico(idRegistro) {
-            if (confirm('Deseja realmente apagar o registro?')) {
-                let historico = JSON.parse(localStorage.getItem(getChaveUsuario('historico'))) || [];
-                historico = historico.filter(item => item.id !== idRegistro);
-                localStorage.setItem(getChaveUsuario('historico'), JSON.stringify(historico));
-                carregarTabelaHistorico();
-                atualizarGraficoETabelaSemanal();
-                atualizarGraficoETabelaMensal();
-            }
-        }
-    </script>
-</body>
-</html>
+                            <div class="file-upload-btn" id="uploadLabelText">📁 Foto
 
